@@ -165,6 +165,7 @@ button:hover {
   justify-content: center; /* Ürünleri ortalamak */
   align-items: center;
   flex-wrap: wrap; /* Ürünlerin alt satırlara geçmesini sağlamak */
+  width: 85%;
 }
 
 /* Slider Konteyneri */
@@ -278,9 +279,10 @@ button:hover {
 }
 
 @media screen and (max-width: 425px) {
-  body {
-    margin-top: 2%;
+  #product-list {
+    width: 125%;
   }
+
   .product-card {
     width: 90%;
   }
@@ -295,19 +297,31 @@ button:hover {
 
   #next-btn,
   #back-btn {
-    bottom: 20%;
+    bottom: 25%;
   }
 
   #next-btn {
-    right: 30%;
+    right: 35%;
   }
 
   #back-btn {
-    left: 30%;
+    left: 35%;
+  }
+
+  #next-p-btn {
+    right: 5%;
+  }
+
+  #prev-p-btn {
+    left: 5%;
   }
 
   .color-circle {
     width: 40px;
     height: 40px;
+  }
+
+  #question-container {
+    margin-top: 50px;
   }
 }

@@ -167,13 +167,38 @@ function displayProducts() {
           const product = filteredProducts[index];
           productCard.innerHTML = `
             <a style="text-decoration:none" href="${product.url}" target="_blank">
-              <img src="${product.image}" alt="${product.name}">
+              <img src="${product.image}" alt="${product.name}" class="lazy-load">
               <h3>${product.name}</h3>
               <p class="old-price">${product.oldPriceText}</p>
               <p>${product.priceText}</p>
               <button class="view-btn">View Product</button>
             </a>
           `;
+
+          // Lazy Load Images using IntersectionObserver
+          const lazyLoadImages = document.querySelectorAll(".lazy-load");
+
+          const imageObserver = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const img = entry.target;
+                  const src = img.getAttribute("data-src");
+                  if (src) {
+                    img.src = src; // Set the real image source
+                    img.classList.remove("lazy-load"); // Optionally remove lazy-load class
+                    observer.unobserve(img); // Stop observing this image
+                  }
+                }
+              });
+            },
+            { threshold: 0.1 }
+          ); // Trigger when 10% of the image is visible
+
+          // Observe all lazy-loaded images
+          lazyLoadImages.forEach((img) => {
+            imageObserver.observe(img);
+          });
 
           // Noktaların aktif durumunu güncelle
           document.querySelectorAll(".dot").forEach((dot, i) => {
@@ -227,6 +252,27 @@ function displayProducts() {
       console.error("Ürün verileri yüklenirken hata oluştu:", error);
     });
 }
+
+// Set up IntersectionObserver
+const lazyLoadImages = document.querySelectorAll(".lazy-load");
+const imageObserver = new IntersectionObserver(
+  (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.getAttribute("data-src");
+        img.classList.remove("lazy-load");
+        observer.unobserve(img);
+      }
+    });
+  },
+  { threshold: 0.1 }
+); // Trigger when 10% of the image is visible
+
+// Observe each lazy-load image
+lazyLoadImages.forEach((image) => {
+  imageObserver.observe(image);
+});
 
 function isValidPriceRange(price, priceRange) {
   if (priceRange === "0-1000" && price <= 1000) return true;
